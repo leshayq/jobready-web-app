@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+@import "tailwindcss";
+
+:root {
+  --primary-color: #292966;
+  --primary-hover-color: #1f1f4e;
+  --faded-text-color: #989898;
+  --font-size-base: 16px;
+}
+
+body {
+  font-family: "Geist", sans-serif;
+  font-weight: 500;
+  background-color: #f4f4f4;
+}
+
+button {
+  font-family: "Geist", sans-serif;
+  font-weight: 700;
+}
+
+.mySwiper {
+  text-align: center;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.mySwiper .swiper-pagination {
+  position: static !important;
+  margin-top: 35px !important;
+  text-align: center;
+}
+
+.mySwiper .swiper-pagination-bullet {
+  width: 14px !important;
+  height: 14px !important;
+  background: rgb(220, 220, 220) !important;
+  opacity: 1;
+  margin: 0 6px !important;
+}
+
+.mySwiper .swiper-pagination-bullet-active {
+  background: var(--primary-color) !important;
+}
+
+@media (max-width: 800px) {
+  .mySwiper .swiper-slide img {
+    max-width: 120px;
+    height: auto;
+  }
+
+  .mySwiper .swiper-pagination {
+    margin-top: 50px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .mySwiper .swiper-slide img {
+    max-width: 200px;
+    height: auto;
+  }
+
+  /* .mySwiper .swiper-pagination {
+    margin-top: 50px !important;
+  } */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.loader {
+  --color: #a5a5b0;
+  --size: 70px;
+  width: var(--size);
+  height: var(--size);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.loader span {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color);
+  animation: keyframes-blink 0.6s alternate infinite linear;
+}
+
+.loader span:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.loader span:nth-child(2) {
+  animation-delay: 200ms;
+}
+
+.loader span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.loader span:nth-child(4) {
+  animation-delay: 400ms;
+}
+
+.loader span:nth-child(5) {
+  animation-delay: 500ms;
+}
+
+.loader span:nth-child(6) {
+  animation-delay: 600ms;
+}
+
+@keyframes keyframes-blink {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.5) rotate(5deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
