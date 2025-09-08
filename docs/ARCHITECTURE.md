@@ -22,7 +22,8 @@
 │   │   ├── questions/            # ресурс вопросов
 │   │   ├── tags/                 # ресурс тегов к вопросам
 │   │   └── users/                # ресурс пользователей
-│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   ├── Dockerfile.prod
 │   └── .env.example              # пример переменных окружения
 ├── frontend/          # React app
 │   ├── public/        # Статические файлы
@@ -39,9 +40,12 @@
 │   │   ├── App.jsx    # Корневой компонент приложения
 │   │   ├── index.css  # Глобальные стили
 │   │   ├── main.jsx   # Точка входа React
-│   └── normalize.css  # Сброс стилей браузера
+│   ├── normalize.css  # Сброс стилей браузера
+│   ├── Dockerfile.dev
+│   └── Dockerfile.prod
 ├── docs/
 │   ├── ARCHITECTURE.md # описание архитектуры приложения
-├── docker.compose.yml
+├── docker.compose.dev.yml
+├── docker.compose.prod.yml
 └── README.md
 ```
