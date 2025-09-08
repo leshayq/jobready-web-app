@@ -2,6 +2,7 @@ import baseApi from "../api";
 
 const api = baseApi;
 
+// API запрос на регистрацию пользователя
 export const registerUser = async (username, email, password) => {
   try {
     const response = await api.post("/auth/register", {

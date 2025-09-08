@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 
+// DTO для авторизация пользователя
 export class LoginDto {
   @IsEmail()
   @IsNotEmpty({ message: 'Електрона пошта не може бути порожньою' })

@@ -1,5 +1,6 @@
-import { PagedResults } from './dto/paged-results.dto';
+import { PagedResults } from './interfaces/paged-results';
 
+// Функция-форматтер, для преобразования полученных данных в данные с пагинацией
 export function formatResponse(result: PagedResults) {
   return {
     items: result.items,

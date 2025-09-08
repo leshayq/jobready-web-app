@@ -4,8 +4,10 @@ import { registerUser } from "../api/auth/register";
 import { Loader } from "../components/Loader";
 import api, { setAccessToken } from "../api/api";
 
+// Создаем контекст аутентификации
 const AuthContext = createContext(null);
 
+// Провайдер контекста аутентификации
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,11 +25,10 @@ export const AuthProvider = ({ children }) => {
           {},
           { withCredentials: true }
         );
-        console.log(response);
         setUser(response.data.data.user);
         setAccessToken(response.data.data.accessToken);
       } catch (error) {
-        console.log("Пользователь не авторизован");
+        console.error("Користувач не авторизований", error);
       } finally {
         setLoading(false);
       }
@@ -39,7 +40,6 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await loginUser(email, password);
-      console.log(response);
 
       setUser(response.data.data.user);
       setAccessToken(response.data.data.accessToken);

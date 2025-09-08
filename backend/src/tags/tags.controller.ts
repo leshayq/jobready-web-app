@@ -6,11 +6,13 @@ import { CreateTagDto } from './dto/create-tag.dto';
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
+  // Endpoint для поиска всех тегов
   @Get()
   async findAll() {
     return this.tagsService.findAll();
   }
 
+  // Endpoint для создания тега
   @Post()
   async createTag(@Body() dto: CreateTagDto) {
     return this.tagsService.createTag(dto);

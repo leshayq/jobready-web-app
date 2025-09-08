@@ -1,9 +1,11 @@
 import { DifficultyTag } from "../components/DifficultyTag";
-import { DeleteButton } from "./DeleteButton";
+import { DeleteButton } from "./buttons/DeleteButton";
 
+// Таблица со списком собеседований.
+// Используется на странице со списком собеседований и в личном кабинете пользователя.
 export const InterviewsTable = ({ interviews, openModalFunc, isPublic }) => {
   return (
-    <table className="min-w-full divide-y divide-gray-100">
+    <table className="min-w-full divide-y divide-gray-100 table-auto">
       <thead className="bg-gray-50">
         <tr className="text-left">
           <th className="px-4 py-3 text-sm font-medium text-gray-600">Назва</th>

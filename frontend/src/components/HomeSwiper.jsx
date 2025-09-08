@@ -13,6 +13,7 @@ import ReactLogo from "../assets/programming_languages/react_logo.png";
 import GitLogo from "../assets/programming_languages/git_logo.png";
 import HtmlLogo from "../assets/programming_languages/html_logo.png";
 
+// Карусель с логотипами языков программирования и технологий. Используется на главной странице
 export const HomeSwiper = () => {
   return (
     <Swiper

@@ -1,11 +1,14 @@
 import React, { createContext, useState, useContext } from "react";
-import { SuccessMessage } from "../components/SuccessMessage";
-import { ErrorMessage } from "../components/ErrorMessage";
+import { SuccessMessage } from "../components/messages/SuccessMessage";
+import { ErrorMessage } from "../components/messages/ErrorMessage";
 
+// Создаем контекст уведомлений
 const NotificationContext = createContext();
 
+// Хук для использования контекста уведомлений
 export const useNotification = () => useContext(NotificationContext);
 
+// Провайдер контекста уведомлений
 export const NotificationProvider = ({ children }) => {
   const [message, setMessage] = useState("");
   const [isVisible, setIsVisible] = useState(false);

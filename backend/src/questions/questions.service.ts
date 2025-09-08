@@ -1,7 +1,7 @@
 import { HttpCode, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QuestionEntity } from './entities/question.entity';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { PaginationParams } from '../common/dto/pagination.dto';
 
@@ -12,6 +12,7 @@ export class QuestionsService {
     private questionsRepository: Repository<QuestionEntity>,
   ) {}
 
+  // Общий сервис для поиска вопросов по возможными параметрам: (поиск; тег) с пагинацией
   async findQuestions(
     paginationParams: PaginationParams,
     filters: {
@@ -51,10 +52,12 @@ export class QuestionsService {
     };
   }
 
+  // Сервис для поиска всех вопросов
   async findAll(paginationParams: PaginationParams) {
     return this.findQuestions(paginationParams);
   }
 
+  // Сервис для поиска вопросов по названию
   async findByTitle(paginationParams: PaginationParams, search: string) {
     if (!search) {
       return { items: [], total: 0, page: 1, limit: 1 };
@@ -62,10 +65,12 @@ export class QuestionsService {
     return this.findQuestions(paginationParams, { search });
   }
 
+  // Сервис для поиска вопросов по тегу
   async findByTag(paginationParams: PaginationParams, tag: string) {
     return this.findQuestions(paginationParams, { tag });
   }
 
+  // Сервис для поиска вопроса по ID
   async findOne(id: number) {
     return this.questionsRepository.findOne({
       where: {
@@ -75,6 +80,7 @@ export class QuestionsService {
     });
   }
 
+  // Сервис для cоздания вопроса
   @HttpCode(201)
   async createQuestion(dto: CreateQuestionDto) {
     const { title, answer, difficulty, tags, author } = dto;

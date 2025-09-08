@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { Pagination } from "../components/Pagination";
+import { useState } from "react";
 import { useInterviews } from "../hooks/useInterviews";
-import { Link } from "react-router-dom";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Modal } from "../components/Modal";
 import { ConfirmDeleteForm } from "../forms/ConfirmDeleteForm";
 import { deleteInterviewRequest } from "../api/interviewRequests/interviewRequests";
 import { useNotification } from "../context/NotificationContext";
+import { ProfileNavButton } from "../components/buttons/ProfileNavButton";
 
 export const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(null);
@@ -42,31 +40,23 @@ export const Profile = () => {
           itemId={itemIdToDelete}
         ></ConfirmDeleteForm>
       </Modal>
-      <h2 className="text-3xl font-semibold text-[var(--primary-color)] !mx-5 !mt-8 !mb-4">
+      <h2 className="text-3xl font-semibold text-[var(--primary-color)] !mx-5 !mt-8 !mb-4 text-center sm:text-left">
         Особистий кабінет
       </h2>
-      <div className="mx-5 p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg flex">
-        <div className="flex flex-col gap-2 min-w-48">
-          <Link to="/profile">
-            <div className="bg-white text-gray-500 flex text-md gap-3 p-2.5 rounded-2xl hover:bg-gray-100 hover:text-[var(--primary-color)] transition-colors duration-200 ease-in-out">
-              Кабінет
-            </div>
-          </Link>
-          <Link to="interviews">
-            <div className="bg-white text-gray-500 flex text-md gap-3 p-2.5 rounded-2xl hover:bg-gray-100 hover:text-[var(--primary-color)] transition-colors duration-200 ease-in-out">
-              {/* <div>⟵</div> */}
-              Співбесіди
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="bg-white text-gray-500 flex text-md gap-3 p-2.5 rounded-2xl hover:bg-gray-100 hover:text-[var(--primary-color)] transition-colors duration-200 ease-in-out">
-              {/* <div>⟵</div> */}
-              Вийти з акаунту
-            </div>
-          </Link>
+      <div className="mx-5 p-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg block sm:flex">
+        <div className="flex flex-col items-center sm:items-start gap-2 min-w-48">
+          <ProfileNavButton text="Кабінет" link={"/profile"}></ProfileNavButton>
+          <ProfileNavButton
+            text="Співбесіди"
+            link={"interviews"}
+          ></ProfileNavButton>
+          <ProfileNavButton
+            text="Вийти з акаунту"
+            link={"/"}
+          ></ProfileNavButton>
         </div>
 
-        <div className="flex-grow">
+        <div className="flex-grow min-w-0">
           <Outlet
             context={{
               isModalOpen,

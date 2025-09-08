@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+// Таблица "users" для хранения пользователей
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()

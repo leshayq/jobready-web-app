@@ -8,14 +8,25 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 
+/**
+ * Интерсептор для преобразования ответов контроллеров в унифицированный формат.
+ *
+ * Все успешные ответы автоматически оборачиваются в объект:
+ *
+ * ```json
+ * {
+ *   "success": true,
+ *   "data": any
+ * }
+ * ```
+ *
+ * Если возвращаемый объект уже содержит поле `success`, то ответ остаётся без изменений.
+ */
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   constructor(private reflector: Reflector) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    // const skip = this.reflector.get<boolean>('skip_wrap', context.getHandler());
-    // if (skip) return next.handle();
-
     return next.handle().pipe(
       map((data) => {
         if (data && typeof data === 'object' && 'success' in data) {

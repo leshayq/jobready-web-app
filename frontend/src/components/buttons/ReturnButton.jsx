@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+// Кнопка возврата на предыдущую страницу
+// Используется в форме запроса собеседования
 export const ReturnButton = ({ link }) => {
   return (
     <Link className="mb-7" to={link}>

@@ -1,4 +1,4 @@
-import { ReturnButton } from "../components/ReturnButton";
+import { ReturnButton } from "../components/buttons/ReturnButton";
 import { RequestInterviewForm } from "../forms/RequestInterviewForm";
 
 export const RequestInterview = () => {

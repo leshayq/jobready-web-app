@@ -10,6 +10,7 @@ import {
 } from "../utils/auth.validators";
 import { getError } from "../utils/utils";
 
+// Форма регистрации
 export const RegisterForm = ({ onSuccessFunc, openLogin }) => {
   const [formData, setFormData] = useState({
     username: "",

@@ -14,6 +14,7 @@ import {
   validateAdditionalInfo,
 } from "../utils/interview-requests.validators";
 
+// Форма запроса на собеседование
 export const RequestInterviewForm = () => {
   const [formData, setFormData] = useState({
     title: "",

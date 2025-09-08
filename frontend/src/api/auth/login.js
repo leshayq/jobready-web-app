@@ -2,6 +2,7 @@ import baseApi from "../api";
 
 const api = baseApi;
 
+// API запрос на авторизацию пользователя
 export const loginUser = async (email, password) => {
   try {
     const response = await api.post("/auth/login", { email, password });

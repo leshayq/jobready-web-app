@@ -4,7 +4,6 @@ import { FilterButton } from "../components/FilterButton";
 import { QuestionCard } from "../components/QuestionCard";
 import { useEffect, useState } from "react";
 import { Loader } from "../components/Loader";
-import { findAllTags } from "../api/tags/tags";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
@@ -12,10 +11,14 @@ import { useQuestions } from "../hooks/useQuestions";
 
 export const Questions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filterButtons, setFilterButtons] = useState([]);
   const [search, setSearch] = useState("");
-  const { questions, loading, totalQuestions, questionsPerPage } =
-    useQuestions();
+  const {
+    questions,
+    loading,
+    totalQuestions,
+    questionsPerPage,
+    filterButtons,
+  } = useQuestions();
 
   const handleFilter = async (filter) => {
     if (filter === "Всі") {
@@ -30,16 +33,6 @@ export const Questions = () => {
     setSearch(query);
     setSearchParams({ page: 1, search: query });
   };
-
-  useEffect(() => {
-    const load = async () => {
-      const filterButtons = await findAllTags();
-
-      setFilterButtons(filterButtons.data.data);
-    };
-
-    load();
-  }, []);
 
   useEffect(() => {
     document.title = "Питання";
@@ -59,11 +52,11 @@ export const Questions = () => {
       </div>
 
       <div className="flex items-center mt-5">
-        <div class="flex items-center w-80 pr-3 gap-2 bg-gray-200 h-[46px] rounded-full overflow-hidden">
+        <div className="flex items-center w-full md:w-80 pr-3 gap-2 bg-gray-200 h-[46px] rounded-full overflow-hidden">
           <input
             type="text"
             placeholder="Пошук питань"
-            class="w-full h-full pl-4 rounded-full outline-none placeholder-gray-600 text-sm"
+            className="w-full h-full pl-4 rounded-full outline-none placeholder-gray-600 text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -101,9 +94,9 @@ export const Questions = () => {
             viewBox="0 0 24 24"
             fill="#6B7280"
             stroke="#6B7280"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
             <path d="M18 6L6 18M6 6l12 12" />
@@ -114,9 +107,15 @@ export const Questions = () => {
       {loading && <Loader></Loader>}
       {!loading && (
         <div className="grid gap-4 mt-4 grid-cols-1 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {questions.map((q) => {
-            return <QuestionCard question={q} key={q.id}></QuestionCard>;
-          })}
+          {questions && questions.length > 0 ? (
+            questions.map((q) => {
+              return <QuestionCard question={q} key={q.id}></QuestionCard>;
+            })
+          ) : (
+            <p colSpan={6} className="pl-2 text-sm text-gray-400">
+              Немає записів
+            </p>
+          )}
         </div>
       )}
 

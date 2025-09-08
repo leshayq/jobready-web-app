@@ -1,0 +1,15 @@
+FROM node:22
+
+WORKDIR /app
+
+# Ставим зависимости (с кешированием)
+COPY package*.json ./
+RUN npm install
+
+# Копируем весь код
+COPY . .
+
+# Открываем порт
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]

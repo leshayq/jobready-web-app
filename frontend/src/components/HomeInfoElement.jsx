@@ -1,3 +1,4 @@
+// Иформационный элемент с заголовком, картинкой и описанием, используется в HomeInfoBlock
 export const HomeInfoElement = ({ title, desc, icon }) => {
   return (
     <div className="flex flex-col justify-center items-center max-w-76">

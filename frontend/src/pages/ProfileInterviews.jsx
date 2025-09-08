@@ -26,8 +26,8 @@ export const ProfileInterviews = () => {
   };
 
   return (
-    <div>
-      <p className="px-4 py-3 text-gray-500 text-md">Ваші співбесіди</p>
+    <div className="overflow-x-auto">
+      <p className="px-3 py-3 text-gray-500 text-md">Ваші співбесіди</p>
       <InterviewsTable
         interviews={interviews}
         openModalFunc={openModalFunc}

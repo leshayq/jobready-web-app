@@ -1,8 +1,8 @@
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { TagEntity } from 'src/tags/entities/tag.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { AnswerType } from '../interfaces/answer.interface';
 
+// DTO для создания вопроса (QuestionEntity)
 export class CreateQuestionDto {
   @IsString()
   @IsNotEmpty()

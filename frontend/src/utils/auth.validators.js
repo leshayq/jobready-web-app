@@ -1,3 +1,4 @@
+// В файле собраны все функции для валидации полей формы авторизации и регистрации
 export const validateEmail = (email) => {
   if (email.length < 1 || email.length > 50) {
     return { ok: false, message: "Невірний формат e-mail." };

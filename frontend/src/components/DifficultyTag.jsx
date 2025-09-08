@@ -1,3 +1,4 @@
+// Компонент для отображения тега уровня сложности: Junior, Middle, Senior
 export const DifficultyTag = ({ difficulty }) => {
   return (
     <div>

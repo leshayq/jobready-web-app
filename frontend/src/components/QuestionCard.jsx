@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { DifficultyTag } from "./DifficultyTag";
 
+// Карточка вопроса с заголовком, тегами и уровнем сложности
 export const QuestionCard = ({ question }) => {
   return (
     <div className="bg-white rounded-3xl shadow-lg p-6 flex flex-col min-h-64 transition-transform hover:-translate-y-1 hover:shadow-xl">

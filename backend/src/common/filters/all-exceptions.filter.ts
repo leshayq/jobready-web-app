@@ -6,6 +6,26 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 
+/**
+ * Глобальный фильтр для обработки всех исключений в приложении.
+ *
+ * Этот фильтр перехватывает любые ошибки, возникшие в процессе обработки запроса,
+ * и возвращает унифицированный JSON-ответ в формате:
+ *
+ * ```json
+ * {
+ *   "success": false,
+ *   "error": {
+ *     "statusCode": number,
+ *     "message": string | object
+ *   }
+ * }
+ * ```
+ *
+ * - Если ошибка является экземпляром `HttpException`, то берётся её статус и сообщение.
+ * - Если ошибка неизвестного типа, возвращается `500 Internal Server Error`.
+ */
+
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {

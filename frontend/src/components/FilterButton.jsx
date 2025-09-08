@@ -1,3 +1,4 @@
+// Кнопка для фильтрации по тегам. Используется на странице со списком вопросов
 export const FilterButton = ({ title, onFilter }) => {
   return (
     <button

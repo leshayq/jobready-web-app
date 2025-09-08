@@ -1,18 +1,27 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import logo from "../assets/logo.png";
-import burgerMenu from "../assets/burgermenu.svg";
-import { Button } from "./Button";
-import { OutlineButton } from "./OutlineButton";
+import { Button } from "./buttons/Button";
+import { OutlineButton } from "./buttons/OutlineButton";
 import { useState } from "react";
 import { Modal } from "../components/Modal";
-import { NavButton } from "./NavButton";
+import { NavButton } from "./buttons/NavButton";
 import { LoginForm } from "../forms/LoginForm";
 import { RegisterForm } from "../forms/RegisterForm";
 import { useAuth } from "../context/AuthContext";
+import Burger from "hamburger-react";
+import { useLocation } from "react-router-dom";
 
+// Шапка сайта с навигацией и кнопками входа/регистрации
 export const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(null);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const location = useLocation();
   const { isAuthenticated, user } = useAuth();
+
+  useEffect(() => {
+    setIsBurgerOpen(false);
+  }, [location.pathname]);
 
   return (
     <nav className="flex items-center p-3 shadow-md mb-2.5 sticky top-0 z-50 bg-[#f4f4f4]">
@@ -26,8 +35,27 @@ export const Navbar = () => {
       </Link>
 
       <div className="w-full">
-        <div className="flex cursor-pointer h-7 w-7 ml-auto lg:hidden">
-          <img className="h-7 w-7" src={burgerMenu} alt="Menu" />
+        <div className="flex justify-end cursor-pointer ml-auto lg:hidden mr-3">
+          <Burger toggled={isBurgerOpen} toggle={setIsBurgerOpen}></Burger>
+          {isBurgerOpen && (
+            <div className="absolute top-0 left-0 w-screen h-screen p-4 text-black bg-white">
+              <div className="flex justify-end mr-3">
+                <Burger
+                  toggled={isBurgerOpen}
+                  toggle={setIsBurgerOpen}
+                ></Burger>
+              </div>
+              <ul className="flex flex-col items-center text-2xl gap-12 ml-12 list-none lg:hidden">
+                <NavButton title="Питання" link="questions"></NavButton>
+                <NavButton title="Співбесіди" link="interviews"></NavButton>
+                <NavButton
+                  title="Stack Overflow"
+                  link="stackoverflow"
+                ></NavButton>
+                <NavButton title="Про нас" link="about"></NavButton>
+              </ul>
+            </div>
+          )}
         </div>
         <ul className="hidden gap-12 ml-12 list-none lg:flex">
           <NavButton title="Питання" link="questions"></NavButton>
@@ -38,7 +66,7 @@ export const Navbar = () => {
       </div>
 
       {isAuthenticated ? (
-        <div className="flex w-fit shadow-box-up rounded-2xl dark:bg-box-dark dark:shadow-box-dark-out hover:bg-gray-200 transition-colors duration-200 ease-in-out ml-auto cursor-pointer">
+        <div className="hidden lg:flex w-fit shadow-box-up rounded-2xl dark:bg-box-dark dark:shadow-box-dark-out hover:bg-gray-200 transition-colors duration-200 ease-in-out ml-auto cursor-pointer">
           <div className="dark:shadow-buttons-box-dark rounded-2xl w-full">
             <Link
               to={"/profile"}

@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   Post,
   Req,
@@ -11,20 +10,15 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { RefreshTokenGuard } from './guards/refresh-token-guard';
-
-interface RequestWithUser extends Request {
-  user: {
-    id: number;
-    refreshToken?: string;
-  };
-}
+import { RequestWithUser } from './interfaces/auth.interfaces';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // Endpoint для авторизации пользователя
   @HttpCode(200)
   @Post('login')
   async login(
@@ -34,12 +28,14 @@ export class AuthController {
     return this.authService.login(dto, res);
   }
 
+  // Endpoint для регистрация пользователя
   @HttpCode(200)
   @Post('register')
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
+  // Endpoint для обновления refresh token'a пользователя
   @UseGuards(RefreshTokenGuard)
   @HttpCode(200)
   @Post('refresh')

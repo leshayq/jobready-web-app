@@ -3,13 +3,14 @@ import RewardIcon from "../assets/homeInfoBlock/reward.png";
 import SocialsIcon from "../assets/homeInfoBlock/socials.png";
 import { HomeInfoElement } from "./HomeInfoElement";
 
-export default function HomeInfoBlock({ languagesImg, interviewImg }) {
+// Блок информации на главной странице, рассказывает о преимуществах сервиса
+export default function HomeInfoBlock() {
   return (
     <section className="mt-20 mx-3 mb-20">
       <h2 className="text-center text-3xl font-bold text-gray-900">
         З JobReady ви отримаєте:
       </h2>
-      <div className="flex justify-evenly mt-20">
+      <div className="flex flex-col items-center gap-10 lg:flex-row lg:gap-0 justify-evenly mt-20">
         <HomeInfoElement
           title="Вдосконалення навичок"
           desc="Вивчайте нові технології та покращуйте наявні скіли. Отримуйте доступ до різноманітних тем та ресурсів"

@@ -1,13 +1,12 @@
 import {
-  IsDate,
   IsNotEmpty,
   IsOptional,
   IsString,
   Length,
   MaxLength,
 } from 'class-validator';
-import { UserEntity } from 'src/users/entities/user.entity';
 
+// DTO для создания запроса собеседования (InterviewRequestEntity)
 export class CreateInterviewRequestDto {
   @IsString({ message: 'Назва повинна бути рядкового типу' })
   @IsNotEmpty({ message: 'Назва не може бути порожньою' })

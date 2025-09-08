@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+// Карточка вопроса из Stack Overflow с заголовком, автором и ссылкой
 export const StackOverflowCard = ({ question }) => {
   return (
     <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col justify-between">

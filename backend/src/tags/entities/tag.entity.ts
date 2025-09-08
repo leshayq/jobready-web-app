@@ -1,5 +1,4 @@
 import { QuestionEntity } from 'src/questions/entities/question.entity';
-import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+// Таблица "tags" для хранения тегов к вопросам
 @Entity('tags')
 export class TagEntity {
   @PrimaryGeneratedColumn()

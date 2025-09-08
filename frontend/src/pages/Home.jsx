@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/Button";
+import { Button } from "../components/buttons/Button";
 import { HomeSwiper } from "../components/HomeSwiper";
-import { OutlineButton } from "../components/OutlineButton";
-import languagesImg from "../assets/0_tVerHf4MknjC4XiD.png";
-import interviewImg from "../assets/interview-wonderful-picture-images-1.png";
+import { OutlineButton } from "../components/buttons/OutlineButton";
 import HomeInfoBlock from "../components/HomeInfoBlock";
 
 export const Home = () => {
@@ -48,10 +46,7 @@ export const Home = () => {
         <HomeSwiper></HomeSwiper>
       </div>
 
-      <HomeInfoBlock
-        languagesImg={languagesImg}
-        interviewImg={interviewImg}
-      ></HomeInfoBlock>
+      <HomeInfoBlock></HomeInfoBlock>
     </section>
   );
 };

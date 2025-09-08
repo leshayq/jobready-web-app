@@ -1,3 +1,4 @@
+// Сообщение об успехе, появляется внизу справа и исчезает через некоторое время
 export const SuccessMessage = ({ message, isVisible }) => {
   return (
     <div

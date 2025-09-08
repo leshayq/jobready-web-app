@@ -2,6 +2,7 @@ import baseApi from "../api";
 
 const api = baseApi;
 
+// API запрос на получение всех запросов на собеседования с пагинацией и фильтром по userId
 export const findAllInterviewRequests = async (
   page = 1,
   limit = 1,
@@ -29,6 +30,7 @@ export const findAllInterviewRequests = async (
   }
 };
 
+// API запрос на создание запроса на собеседование
 export const createInterviewRequests = async (formData) => {
   try {
     const response = await api.post("/interview-requests/", { ...formData });
@@ -39,6 +41,7 @@ export const createInterviewRequests = async (formData) => {
   }
 };
 
+// API запрос на удаление запроса на собеседование
 export const deleteInterviewRequest = async (id) => {
   try {
     const response = await api.delete(`/interview-requests/${id}/`);

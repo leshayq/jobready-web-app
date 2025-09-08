@@ -1,3 +1,4 @@
+// Контурная кнопка
 export const OutlineButton = ({ title, onClickEvent }) => {
   return (
     <button

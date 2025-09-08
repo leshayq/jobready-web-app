@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../context/NotificationContext";
 
+// Компонент для защиты маршрутов, доступных только авторизованным пользователям
 export const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const { showNotification } = useNotification();

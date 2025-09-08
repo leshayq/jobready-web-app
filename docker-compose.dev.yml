@@ -1,0 +1,41 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: ["npm", "run", "dev", "--", "--host"]
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    environment:
+      ORACLE_PASSWORD: "123456"
+      ORACLE_PDB: "XEPDB1"
+    container_name: oracle_db_container
+
+volumes:
+  oracle-data:

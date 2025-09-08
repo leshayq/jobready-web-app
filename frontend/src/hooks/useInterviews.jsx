@@ -3,6 +3,7 @@ import { findAllInterviewRequests } from "../api/interviewRequests/interviewRequ
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+// Хук для получения списка собеседований с возможностью фильтрации по пользователю
 export const useInterviews = (onlyUser = false) => {
   const [interviews, setInterviews] = useState([]);
   const [totalInterviews, setTotalInterviews] = useState(0);
@@ -31,12 +32,14 @@ export const useInterviews = (onlyUser = false) => {
             interviewsPerPage,
             user.id
           );
-          setInterviews(response.data.data.items);
-          setTotalInterviews(response.data.data.pagination.total);
+          setInterviews(response?.data?.data?.items ?? []);
+          setTotalInterviews(response?.data?.data?.pagination?.total ?? 0);
         }
       }
     } catch (error) {
       console.error("Помилка при отриманні списку співбесід", error);
+      setInterviews([]);
+      setTotalInterviews(0);
     } finally {
       setLoading(false);
     }

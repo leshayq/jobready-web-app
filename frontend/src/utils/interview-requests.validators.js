@@ -1,3 +1,4 @@
+// В файле собраны все функции для валидации полей формы создания запроса на интервью
 export const validateTitle = (title) => {
   if (title.length < 1 || title.length > 50) {
     return {

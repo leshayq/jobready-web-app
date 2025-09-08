@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+// Таблица "interview_requests" для хранения запросов собеседований
 @Entity('interview_requests')
 export class InterviewRequestEntity {
   @PrimaryGeneratedColumn()

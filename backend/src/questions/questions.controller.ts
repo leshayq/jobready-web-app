@@ -2,13 +2,14 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { PaginationParams } from '../common/dto/pagination.dto';
-import { PagedResults } from 'src/common/dto/paged-results.dto';
+import { PagedResults } from 'src/common/interfaces/paged-results';
 import { formatResponse } from 'src/common/formatResponse';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
+  // Enpoint для получения всех вопросов
   @Get()
   async findAll(
     @Query('search') search: string,
@@ -33,11 +34,13 @@ export class QuestionsController {
     }
   }
 
+  // Enpoint для получения вопроса по ID
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.questionsService.findOne(+id);
   }
 
+  // Enpoint для создания вопроса
   @Post()
   async createQuestion(@Body() dto: CreateQuestionDto) {
     return this.questionsService.createQuestion(dto);

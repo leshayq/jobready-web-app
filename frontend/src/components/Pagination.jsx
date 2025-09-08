@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
+// Компонент для отображения пагинации
 export const Pagination = ({ itemsPerPage, totalItems }) => {
   const pageNumbers = [];
   const [searchParams, setSearchParams] = useSearchParams();

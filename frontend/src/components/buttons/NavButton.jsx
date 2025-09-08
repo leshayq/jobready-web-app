@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 
+// Навигационная кнопка. Если type="footer", кнопка будет белая, иначе черная.
+// Используется в навбаре сайта и в футере.
 export const NavButton = ({ title, link, type }) => {
   return (
     <li>

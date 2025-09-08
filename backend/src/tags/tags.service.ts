@@ -11,10 +11,12 @@ export class TagsService {
     private tagsRepository: Repository<TagEntity>,
   ) {}
 
+  // Сервис для поиска всех тегов
   async findAll() {
     return this.tagsRepository.find();
   }
 
+  // Сервис для поиска тегов по названию
   async findByTitle(title: string) {
     return this.tagsRepository.findOne({
       where: {
@@ -23,12 +25,14 @@ export class TagsService {
     });
   }
 
+  // Функция-валидатор для проверки существования тега по названию (theme)
   async validateTheme(theme: string) {
     const tag = await this.findByTitle(theme);
     if (!tag) return false;
     return true;
   }
 
+  // Сервис для создания тега
   @HttpCode(201)
   async createTag(dto: CreateTagDto) {
     const { title } = dto;

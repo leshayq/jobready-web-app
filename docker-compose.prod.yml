@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.prod
+    image: myproject-backend:prod
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+    depends_on:
+      - oracle-db
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    environment:
+      ORACLE_PASSWORD: "123456"
+      ORACLE_PDB: "XEPDB1"
+    container_name: oracle_db_container
+
+volumes:
+  oracle-data:

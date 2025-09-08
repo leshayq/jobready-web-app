@@ -1,3 +1,4 @@
+// Сообщение об ошибке, появляется внизу справа и исчезает через некоторое время
 export const ErrorMessage = ({ message, isVisible }) => {
   return (
     <div

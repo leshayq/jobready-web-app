@@ -5,6 +5,7 @@ import hljs from "highlight.js";
 import javascript from "highlight.js/lib/languages/javascript";
 hljs.registerLanguage("javascript", javascript);
 
+// Хук для получения деталей вопроса по его ID
 export const useQuestionDetail = () => {
   const [question, setQuestion] = useState(null);
   const [visible, setVisible] = useState(false);

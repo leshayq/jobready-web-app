@@ -1,3 +1,4 @@
+// Компонент для отображения модального окна
 export const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 

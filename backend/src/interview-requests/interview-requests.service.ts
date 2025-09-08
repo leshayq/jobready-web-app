@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InterviewRequestEntity } from './entities/interview-request.entity';
 import { Repository } from 'typeorm';
 import { CreateInterviewRequestDto } from './dto/create-interview-request.dto';
-import { validateDifficulty } from './validators/validators';
+import { validateDifficulty } from './validators/interview-requests.validators';
 import { TagsService } from 'src/tags/tags.service';
 import { PaginationParams } from 'src/common/dto/pagination.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
@@ -20,6 +20,7 @@ export class InterviewRequestsService {
     private readonly tagsService: TagsService,
   ) {}
 
+  // Сервис для поиска всех запросов собеседований с пагинацией
   async findAll(paginationParams: PaginationParams, userId?: number) {
     const page = Number(paginationParams?.page ?? 1);
     const limit = Number(paginationParams?.limit ?? 1);
@@ -49,6 +50,7 @@ export class InterviewRequestsService {
     };
   }
 
+  // Сервис для поиска запроса собеседований по ID
   async findById(id: number) {
     console.log(id, 'запрос на удаление interview');
     const interviewRequest = await this.interviewRequestsRepository.findOne({
@@ -63,6 +65,7 @@ export class InterviewRequestsService {
     return interviewRequest;
   }
 
+  // Сервис для создания запроса собеседования
   async createInterviewRequest(
     dto: CreateInterviewRequestDto,
     user: UserEntity,
@@ -88,8 +91,18 @@ export class InterviewRequestsService {
     return await this.interviewRequestsRepository.save(interviewRequest);
   }
 
-  async deleteInterviewRequest(id: number) {
+  // Сервис для удаления запроса собеседования
+  async deleteInterviewRequest(id: number, user: UserEntity) {
     const interviewRequest = await this.findById(id);
+
+    if (!user) {
+      throw new BadRequestException('Користувач не авторизований');
+    }
+    if (interviewRequest.author.id !== user.id) {
+      throw new BadRequestException(
+        'Ви не можете видалити цей запит на співбесіду',
+      );
+    }
 
     return await this.interviewRequestsRepository.remove(interviewRequest);
   }

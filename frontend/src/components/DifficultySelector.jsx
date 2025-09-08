@@ -1,3 +1,4 @@
+// Компонент для выбора уровня сложности: Junior, Middle, Senior
 export const DifficultySelector = ({ formData, setFormData, error }) => {
   return (
     <div>

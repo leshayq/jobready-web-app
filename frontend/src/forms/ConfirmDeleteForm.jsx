@@ -1,5 +1,6 @@
-import { DeleteButton } from "../components/DeleteButton";
+import { DeleteButton } from "../components/buttons/DeleteButton";
 
+// Форма подтверждения удаления. Используется в личном кабинете пользователя при удалении запроса на собеседование
 export const ConfirmDeleteForm = ({ onClose, onDeleteConfirm, itemId }) => {
   return (
     <div className="flex items-center justify-center">

@@ -7,12 +7,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { AnswerType } from '../interfaces/answer.interface';
 
+// Таблица "questions" для хранения вопросов
 @Entity('questions')
 export class QuestionEntity {
   @PrimaryGeneratedColumn()

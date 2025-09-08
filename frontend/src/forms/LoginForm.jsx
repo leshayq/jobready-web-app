@@ -5,6 +5,7 @@ import { validateEmail, validatePassword } from "../utils/auth.validators";
 import { getError } from "../utils/utils";
 import { useNotification } from "../context/NotificationContext";
 
+// Форма авторизации
 export const LoginForm = ({ onSuccessFunc, openRegister }) => {
   const [formData, setFormData] = useState({
     email: "",

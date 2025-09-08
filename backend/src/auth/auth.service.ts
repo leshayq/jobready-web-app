@@ -5,12 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
 import { LoginDto } from './dto/login.dto';
-import { compare, genSalt, hash } from 'bcrypt';
-import { CreateUserDto } from 'src/users/dto/create-user-dto';
+import { compare, hash } from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { Response } from 'express';
@@ -24,6 +21,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
+  // Сервис авторизация пользователя
   async login(dto: LoginDto, res: Response) {
     const user = await this.validateUser(dto);
 
@@ -38,6 +36,7 @@ export class AuthService {
     };
   }
 
+  // Сервис регистрации пользователя
   async register(dto: RegisterDto) {
     const oldUser = await this.usersService.findByEmail(dto.email);
     const oldUser2 = await this.usersService.findByUsername(dto.username);
@@ -50,10 +49,11 @@ export class AuthService {
     return;
   }
 
+  // Сервис обновления токенов пользователя
   async refreshTokens(userId: number, refreshToken: string, res: Response) {
     const user = await this.usersService.findById(+userId);
     if (!user || !user.hashedRefreshToken) {
-      throw new ForbiddenException('Доступ запрещен');
+      throw new ForbiddenException('Доступ заборонено');
     }
 
     const isRefreshTokenMatching = await compare(
@@ -62,7 +62,7 @@ export class AuthService {
     );
 
     if (!isRefreshTokenMatching) {
-      throw new ForbiddenException('Доступ запрещен. Невалидный токен.');
+      throw new ForbiddenException('Доступ заборонено. Невiрний токен');
     }
 
     const tokens = await this.issueTokenPair(user.id);
@@ -75,6 +75,7 @@ export class AuthService {
     };
   }
 
+  // Сервис валидации пользователя (поиск пользователя в бд и сравнение паролей)
   async validateUser(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user) throw new UnauthorizedException('Невірний e-mail або пароль)');
@@ -86,6 +87,7 @@ export class AuthService {
     return user;
   }
 
+  // Сервис генерации токенов
   async issueTokenPair(userId: number) {
     const data = { sub: userId };
 
@@ -100,6 +102,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  // Сервис обновления refresh токена
   private async updateRefreshTokenHash(userId: number, refreshToken: string) {
     const hashedRefreshToken = await hash(refreshToken, 10);
     await this.usersService.updateUser(userId, {
@@ -107,6 +110,7 @@ export class AuthService {
     });
   }
 
+  // Сервис-сеттер refresh токена в cookies
   private setRefreshTokenToCookie(res: Response, refreshToken: string) {
     const cookieName =
       this.configService.get<string>('REFRESH_COOKIE_NAME') || 'refreshToken';
@@ -129,6 +133,7 @@ export class AuthService {
     });
   }
 
+  // Сервис-форматтер, возвращает объект пользователя с полями (id, email, username)
   async returnUserFields(user: UserEntity) {
     return {
       id: user.id,

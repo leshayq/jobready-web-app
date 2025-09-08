@@ -1,11 +1,14 @@
 import axios from "axios";
 
+// Экземпляр axios с базовым URL и настройками
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
   withCredentials: true,
 });
 
 let accessToken = null;
+
+// Функция для установки / очистки accessToken
 export const setAccessToken = (token) => {
   accessToken = token;
   if (token) {
@@ -17,9 +20,10 @@ export const setAccessToken = (token) => {
   }
 };
 
-let isRefreshing = false;
-let failedQueue = [];
+let isRefreshing = false; // флаг — идёт ли сейчас обновление токена
+let failedQueue = []; // очередь запросов, которые ждут обновления токена
 
+// Функция для обработки очереди отложенных запросов
 const processQueue = (error, token = null) => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (error) reject(error);
@@ -28,25 +32,30 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
+// Перехватчик ответов
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
     const status = error?.response?.status;
 
+    // Если ошибка не связана с авторизацией — пробрасываем дальше
     if (!status || status !== 401) {
       return Promise.reject(error);
     }
 
     const requestUrl = originalRequest?.url || "";
+    // Если 401 получен при попытке обновить токен — выходим
     if (requestUrl.includes("/auth/refresh")) {
       return Promise.reject(error);
     }
 
+    // Если обновление уже идёт, ставим запрос в очередь
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({
           resolve: (token) => {
+            // повторяем запрос с новым токеном
             originalRequest.headers["Authorization"] = `Bearer ${token}`;
             resolve(api(originalRequest));
           },
@@ -55,25 +64,28 @@ api.interceptors.response.use(
       });
     }
 
+    // Устанавливаем флаг и пробуем обновить токен
     originalRequest._retry = true;
     isRefreshing = true;
 
     try {
+      // Запрос на обновление refresh токена
       const refreshResponse = await axios.post(
         `${api.defaults.baseURL}/auth/refresh`,
         {},
         { withCredentials: true }
       );
 
+      // Получаем новый access token и сохраняем его
       const newAccessToken = refreshResponse.data.accessToken;
       setAccessToken(newAccessToken);
-      console.log(newAccessToken);
-
       processQueue(null, newAccessToken);
 
+      // Повторяем исходный запрос с новым токеном
       originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
       return api(originalRequest);
     } catch (refreshError) {
+      // Если обновить не удалось — отклоняем все запросы
       processQueue(refreshError, null);
       return Promise.reject(refreshError);
     } finally {

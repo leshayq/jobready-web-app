@@ -2,6 +2,7 @@ import baseApi from "../api";
 
 const api = baseApi;
 
+// API запрос для поиска всех вопросов с пагинацией
 export const findAllQuestions = async (page = 1, limit = 1) => {
   try {
     const response = api.get(`/questions?page=${page}&limit=${limit}`);
@@ -13,6 +14,7 @@ export const findAllQuestions = async (page = 1, limit = 1) => {
   }
 };
 
+// API запрос для поиска вопросов по тегу с пагинацией
 export const findByTag = async (page = 1, tag, limit) => {
   try {
     const response = api.get(
@@ -25,6 +27,7 @@ export const findByTag = async (page = 1, tag, limit) => {
   }
 };
 
+// API запрос для поиска вопросов по заголовку с пагинацией
 export const findByTitle = async (page = 1, search, limit) => {
   try {
     const response = api.get(
@@ -37,6 +40,7 @@ export const findByTitle = async (page = 1, search, limit) => {
   }
 };
 
+// API запрос для поиска одного вопроса по ID
 export const findOneQuestion = async (id) => {
   try {
     const response = api.get(`/questions/${id}`);

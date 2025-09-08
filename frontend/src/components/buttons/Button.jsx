@@ -1,3 +1,4 @@
+// Основная кнопка
 export const Button = ({ title, onClickEvent }) => {
   return (
     <button
