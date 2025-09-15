@@ -7,34 +7,30 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InterviewRequestEntity } from './entities/interview-request.entity';
 import { Repository } from 'typeorm';
 import { CreateInterviewRequestDto } from './dto/create-interview-request.dto';
-import { validateDifficulty } from './validators/interview-requests.validators';
-import { TagsService } from 'src/tags/tags.service';
 import { PaginationParams } from 'src/common/dto/pagination.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { ToPageResults } from 'src/common/interfaces/paged-results';
 
 @Injectable()
 export class InterviewRequestsService {
   constructor(
     @InjectRepository(InterviewRequestEntity)
     private readonly interviewRequestsRepository: Repository<InterviewRequestEntity>,
-    private readonly tagsService: TagsService,
   ) {}
 
   // Сервис для поиска всех запросов собеседований с пагинацией
-  async findAll(paginationParams: PaginationParams, userId?: number) {
+  async findAll(
+    paginationParams: PaginationParams,
+    userId?: number,
+  ): Promise<ToPageResults> {
     const page = Number(paginationParams?.page ?? 1);
     const limit = Number(paginationParams?.limit ?? 1);
-    let query: any;
+    const query = this.interviewRequestsRepository
+      .createQueryBuilder('ir')
+      .leftJoinAndSelect('ir.author', 'author');
 
     if (userId) {
-      query = this.interviewRequestsRepository
-        .createQueryBuilder('ir')
-        .leftJoinAndSelect('ir.author', 'author')
-        .where('author.id = :userId', { userId });
-    } else {
-      query = this.interviewRequestsRepository
-        .createQueryBuilder('ir')
-        .leftJoinAndSelect('ir.author', 'author');
+      query.where('author.id  = :userId', { userId });
     }
 
     const [items, total] = await query
@@ -51,17 +47,16 @@ export class InterviewRequestsService {
   }
 
   // Сервис для поиска запроса собеседований по ID
-  async findById(id: number) {
-    console.log(id, 'запрос на удаление interview');
+  async findById(id: number): Promise<InterviewRequestEntity> {
     const interviewRequest = await this.interviewRequestsRepository.findOne({
       where: { id },
+      relations: ['author'],
     });
 
     if (!interviewRequest) {
       throw new NotFoundException('Запит на співбесіду не знайдено');
     }
 
-    console.log(interviewRequest, 'інтервью реквест');
     return interviewRequest;
   }
 
@@ -69,17 +64,9 @@ export class InterviewRequestsService {
   async createInterviewRequest(
     dto: CreateInterviewRequestDto,
     user: UserEntity,
-  ) {
+  ): Promise<InterviewRequestEntity> {
     const { title, date, theme, difficulty, additionalInfo } = dto;
-    if (!validateDifficulty(difficulty))
-      throw new BadRequestException(
-        'Рівень повинен бути одним з 3 значень: Junior, Middle, Senior',
-      );
 
-    const themeValidation = await this.tagsService.validateTheme(theme);
-    if (!themeValidation) {
-      throw new NotFoundException('Вказана тема не існує');
-    }
     const interviewRequest = await this.interviewRequestsRepository.create({
       title,
       theme,
@@ -92,7 +79,10 @@ export class InterviewRequestsService {
   }
 
   // Сервис для удаления запроса собеседования
-  async deleteInterviewRequest(id: number, user: UserEntity) {
+  async deleteInterviewRequest(
+    id: number,
+    user: UserEntity,
+  ): Promise<InterviewRequestEntity> {
     const interviewRequest = await this.findById(id);
 
     if (!user) {

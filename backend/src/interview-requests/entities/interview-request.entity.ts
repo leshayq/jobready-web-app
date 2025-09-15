@@ -1,3 +1,4 @@
+import { TagEntity } from 'src/tags/entities/tag.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -20,8 +21,8 @@ export class InterviewRequestEntity {
   @Column()
   difficulty: string;
 
-  @Column()
-  theme: string;
+  @ManyToOne(() => TagEntity, (theme) => theme.interviews)
+  theme: TagEntity;
 
   @Column()
   date: string;

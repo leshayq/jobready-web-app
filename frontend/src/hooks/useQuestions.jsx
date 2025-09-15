@@ -13,6 +13,7 @@ export const useQuestions = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [filterButtons, setFilterButtons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const questionsPerPage = 2;
 
@@ -21,12 +22,15 @@ export const useQuestions = () => {
   useEffect(() => {
     const load = async () => {
       try {
+        setError(null);
         setLoading(true);
         const filterButtons = await findAllTags();
 
         setFilterButtons(filterButtons?.data?.data ?? []);
       } catch (error) {
         console.error("Помилка при отриманні списку тегів", error);
+        setError("Не вдалося завантажити список тегів");
+
         setFilterButtons([]);
       } finally {
         setLoading(false);
@@ -39,6 +43,7 @@ export const useQuestions = () => {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
+      setError(null);
 
       const searchValue = searchParams.get("search") || "";
       const pageValue = parseInt(searchParams.get("page") || "1", 10);
@@ -61,6 +66,7 @@ export const useQuestions = () => {
         setTotalQuestions(response?.data?.data?.pagination?.total ?? 0);
       } catch (error) {
         console.error("Помилка при отриманні списку питань", error);
+        setError("Не вдалося завантажити список питань");
         setQuestions([]);
         setTotalQuestions(0);
       } finally {
@@ -77,5 +83,6 @@ export const useQuestions = () => {
     totalQuestions,
     questionsPerPage,
     filterButtons,
+    error,
   };
 };

@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { UsersService } from 'src/users/users.service';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * JWT стратегия для аутентификации пользователей.
@@ -14,13 +15,16 @@ import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly usersService: UsersService) {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly configService: ConfigService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 
       ignoreExpiration: false,
 
-      secretOrKey: process.env.JWT_SECRET || 'YOUR_SUPER_SECRET_KEY',
+      secretOrKeyProvider: async () => configService.get<string>('JWT_SECRET'),
     });
   }
 

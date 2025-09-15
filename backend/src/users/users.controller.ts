@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterDto } from 'src/auth/dto/register.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -9,13 +10,7 @@ export class UsersController {
   // DEVELOPMENT ONLY
   // Endpoint для получения всех пользователей
   @Get()
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
     return this.usersService.findAll();
-  }
-
-  // Endpoint для создания нового пользователя
-  @Post()
-  async createUser(@Body() dto: RegisterDto) {
-    return this.usersService.createUser(dto);
   }
 }

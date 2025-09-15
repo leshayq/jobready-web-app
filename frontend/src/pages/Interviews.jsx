@@ -8,7 +8,7 @@ import { Pagination } from "../components/Pagination";
 import { InterviewsTable } from "../components/InterviewsTable";
 
 export const Interviews = () => {
-  const { interviews, loading, totalInterviews, interviewsPerPage } =
+  const { interviews, loading, totalInterviews, interviewsPerPage, error } =
     useInterviews();
   const { isAuthenticated } = useAuth();
 
@@ -53,7 +53,11 @@ export const Interviews = () => {
             isPublic={true}
           ></InterviewsTable>
         </div>
+        {error && (
+          <p className="text-red-600 font-bold text-sm mt-2">{error}</p>
+        )}
       </div>
+
       <Pagination
         itemsPerPage={interviewsPerPage}
         totalItems={totalInterviews}

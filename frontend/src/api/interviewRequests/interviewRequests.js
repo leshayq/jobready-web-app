@@ -8,7 +8,6 @@ export const findAllInterviewRequests = async (
   limit = 1,
   userId = null
 ) => {
-  console.log(userId);
   try {
     const hasValidUserId =
       userId !== null &&

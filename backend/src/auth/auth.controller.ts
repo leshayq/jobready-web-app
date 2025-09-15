@@ -12,7 +12,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Response } from 'express';
 import { RefreshTokenGuard } from './guards/refresh-token-guard';
-import { RequestWithUser } from './interfaces/auth.interfaces';
+import { AuthResponse, RequestWithUser } from './interfaces/auth.interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -24,14 +24,14 @@ export class AuthController {
   async login(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Promise<AuthResponse> {
     return this.authService.login(dto, res);
   }
 
   // Endpoint для регистрация пользователя
   @HttpCode(200)
   @Post('register')
-  async register(@Body() dto: RegisterDto) {
+  async register(@Body() dto: RegisterDto): Promise<void> {
     return this.authService.register(dto);
   }
 
@@ -42,7 +42,7 @@ export class AuthController {
   async refreshTokens(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Promise<AuthResponse> {
     const userId = req.user.id;
     const refreshToken = req.cookies.refreshToken;
     return this.authService.refreshTokens(userId, refreshToken, res);

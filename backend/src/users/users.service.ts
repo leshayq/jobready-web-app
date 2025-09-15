@@ -14,12 +14,12 @@ export class UsersService {
 
   // DEVELOPMENT ONLY
   // Сервис для поиска всех пользователей
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
 
   // Сервис для поиска пользователя по полю email
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: {
         email,
@@ -28,7 +28,7 @@ export class UsersService {
   }
 
   // Сервис для поиска пользователя по полю username
-  async findByUsername(username: string) {
+  async findByUsername(username: string): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: {
         username,
@@ -37,7 +37,7 @@ export class UsersService {
   }
 
   // Сервис для поиска пользователя по ID
-  async findById(userId: number) {
+  async findById(userId: number): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: {
         id: userId,
@@ -47,7 +47,7 @@ export class UsersService {
 
   // Сервис для создания нового пользователя
   @HttpCode(201)
-  async createUser(dto: RegisterDto) {
+  async createUser(dto: RegisterDto): Promise<UserEntity> {
     const { email, username, password } = dto;
     const role = 'user';
 

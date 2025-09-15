@@ -17,6 +17,7 @@ import { Profile } from "./pages/Profile";
 import { ProfileOverivew } from "./pages/ProfileOverview";
 import { ProfileInterviews } from "./pages/ProfileInterviews";
 import { About } from "./pages/About";
+import { logErrorToServer } from "./api/logs/logs";
 
 function App() {
   return (
@@ -77,5 +78,15 @@ function App() {
     </AuthProvider>
   );
 }
+
+window.addEventListener("error", (event) => {
+  logErrorToServer(event.error);
+  console.log("Ошибка на клиенте:", event.error);
+});
+
+window.addEventListener("unhandledrejection", (event) => {
+  logErrorToServer(event.reason);
+  console.log("Ошибка на клиенте: (отклоненный промис)", event.reason);
+});
 
 export default App;

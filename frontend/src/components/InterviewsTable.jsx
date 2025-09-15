@@ -22,7 +22,6 @@ export const InterviewsTable = ({ interviews, openModalFunc, isPublic }) => {
           )}
         </tr>
       </thead>
-
       <tbody className="bg-white divide-y divide-gray-100">
         {interviews.length > 0 ? (
           interviews.map((interview) => (

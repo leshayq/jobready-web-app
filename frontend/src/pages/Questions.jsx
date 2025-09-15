@@ -18,6 +18,7 @@ export const Questions = () => {
     totalQuestions,
     questionsPerPage,
     filterButtons,
+    error,
   } = useQuestions();
 
   const handleFilter = async (filter) => {
@@ -117,6 +118,9 @@ export const Questions = () => {
             </p>
           )}
         </div>
+      )}
+      {error && (
+        <p className="text-red-600 font-bold text-sm mx-2 mt-2">{error}</p>
       )}
 
       <Pagination

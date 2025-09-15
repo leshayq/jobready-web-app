@@ -16,6 +16,9 @@ import { formatResponse } from 'src/common/formatResponse';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { getUser } from 'src/common/getUser';
+import { PaginationResult } from 'src/common/interfaces/paged-results';
+import { InterviewRequestEntity } from './entities/interview-request.entity';
 
 @Controller('interview-requests')
 export class InterviewRequestsController {
@@ -28,7 +31,7 @@ export class InterviewRequestsController {
   async findAll(
     @Query() paginationParams: PaginationParams,
     @Query('user') userId?: number,
-  ) {
+  ): Promise<PaginationResult> {
     const result = await this.interviewRequestsService.findAll(
       paginationParams,
       userId,
@@ -42,8 +45,8 @@ export class InterviewRequestsController {
   async createInterviewRequest(
     @Body() dto: CreateInterviewRequestDto,
     @Req() req: Request,
-  ) {
-    const currentUser = req.user as UserEntity;
+  ): Promise<InterviewRequestEntity> {
+    const currentUser = getUser(req);
 
     return this.interviewRequestsService.createInterviewRequest(
       dto,
@@ -54,8 +57,11 @@ export class InterviewRequestsController {
   // Enpoint для удаления запроса собеседования
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
-  async deleteInterviewRequest(@Param('id') id: string, @Req() req: Request) {
-    const currentUser = req.user as UserEntity;
+  async deleteInterviewRequest(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ): Promise<InterviewRequestEntity> {
+    const currentUser = getUser(req);
 
     return this.interviewRequestsService.deleteInterviewRequest(
       +id,

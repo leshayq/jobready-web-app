@@ -5,7 +5,7 @@ const api = baseApi;
 // API запрос для поиска всех вопросов с пагинацией
 export const findAllQuestions = async (page = 1, limit = 1) => {
   try {
-    const response = api.get(`/questions?page=${page}&limit=${limit}`);
+    const response = await api.get(`/questions?page=${page}&limit=${limit}`);
 
     return response;
   } catch (error) {
@@ -17,7 +17,7 @@ export const findAllQuestions = async (page = 1, limit = 1) => {
 // API запрос для поиска вопросов по тегу с пагинацией
 export const findByTag = async (page = 1, tag, limit) => {
   try {
-    const response = api.get(
+    const response = await api.get(
       `/questions/?tag=${encodeURIComponent(tag)}&page=${page}&limit=${limit}`
     );
     return response;
@@ -30,7 +30,7 @@ export const findByTag = async (page = 1, tag, limit) => {
 // API запрос для поиска вопросов по заголовку с пагинацией
 export const findByTitle = async (page = 1, search, limit) => {
   try {
-    const response = api.get(
+    const response = await api.get(
       `/questions?page=${page}&limit=${limit}&search=${search}`
     );
     return response;
@@ -43,11 +43,11 @@ export const findByTitle = async (page = 1, search, limit) => {
 // API запрос для поиска одного вопроса по ID
 export const findOneQuestion = async (id) => {
   try {
-    const response = api.get(`/questions/${id}`);
+    const response = await api.get(`/questions/${id}`);
 
     return response;
   } catch (error) {
     console.error("Помилка при отриманні питання", error);
-    throw err;
+    throw error;
   }
 };

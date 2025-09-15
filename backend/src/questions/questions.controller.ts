@@ -1,9 +1,23 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { PaginationParams } from '../common/dto/pagination.dto';
-import { PagedResults } from 'src/common/interfaces/paged-results';
 import { formatResponse } from 'src/common/formatResponse';
+import { CreateQuestionQueryParamsDto } from './dto/create-question-query-params.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { getUser } from 'src/common/getUser';
+import { PaginationResult } from 'src/common/interfaces/paged-results';
+import { QuestionEntity } from './entities/question.entity';
 
 @Controller('questions')
 export class QuestionsController {
@@ -12,37 +26,31 @@ export class QuestionsController {
   // Enpoint для получения всех вопросов
   @Get()
   async findAll(
-    @Query('search') search: string,
-    @Query('tag') tag: string,
     @Query() paginationParams: PaginationParams,
-  ) {
-    if (search) {
-      const result = await this.questionsService.findByTitle(
-        paginationParams,
-        search,
-      );
-      return formatResponse(result);
-    } else if (tag) {
-      const result = await this.questionsService.findByTag(
-        paginationParams,
-        tag,
-      );
-      return formatResponse(result);
-    } else {
-      const result = await this.questionsService.findAll(paginationParams);
-      return formatResponse(result);
-    }
+    @Query() createQuestionQueryParams: CreateQuestionQueryParamsDto,
+  ): Promise<PaginationResult> {
+    const response = await this.questionsService.findQuestions(
+      paginationParams,
+      createQuestionQueryParams,
+    );
+
+    return formatResponse(response);
   }
 
   // Enpoint для получения вопроса по ID
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<QuestionEntity | null> {
     return this.questionsService.findOne(+id);
   }
 
   // Enpoint для создания вопроса
   @Post()
-  async createQuestion(@Body() dto: CreateQuestionDto) {
-    return this.questionsService.createQuestion(dto);
+  @UseGuards(AuthGuard('jwt'))
+  async createQuestion(
+    @Body() dto: CreateQuestionDto,
+    @Req() req: Request,
+  ): Promise<QuestionEntity> {
+    const currentUser = getUser(req);
+    return this.questionsService.createQuestion(dto, currentUser);
   }
 }

@@ -1,7 +1,7 @@
-import { PagedResults } from './interfaces/paged-results';
+import { PaginationResult, ToPageResults } from './interfaces/paged-results';
 
 // Функция-форматтер, для преобразования полученных данных в данные с пагинацией
-export function formatResponse(result: PagedResults) {
+export function formatResponse(result: ToPageResults): PaginationResult {
   return {
     items: result.items,
     pagination: {

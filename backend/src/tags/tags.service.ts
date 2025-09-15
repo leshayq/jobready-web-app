@@ -12,12 +12,12 @@ export class TagsService {
   ) {}
 
   // Сервис для поиска всех тегов
-  async findAll() {
+  async findAll(): Promise<TagEntity[]> {
     return this.tagsRepository.find();
   }
 
   // Сервис для поиска тегов по названию
-  async findByTitle(title: string) {
+  async findByTitle(title: string): Promise<TagEntity | null> {
     return this.tagsRepository.findOne({
       where: {
         title,
@@ -26,7 +26,7 @@ export class TagsService {
   }
 
   // Функция-валидатор для проверки существования тега по названию (theme)
-  async validateTheme(theme: string) {
+  async validateTheme(theme: string): Promise<boolean> {
     const tag = await this.findByTitle(theme);
     if (!tag) return false;
     return true;
@@ -34,7 +34,7 @@ export class TagsService {
 
   // Сервис для создания тега
   @HttpCode(201)
-  async createTag(dto: CreateTagDto) {
+  async createTag(dto: CreateTagDto): Promise<TagEntity> {
     const { title } = dto;
 
     const tag = this.tagsRepository.create({

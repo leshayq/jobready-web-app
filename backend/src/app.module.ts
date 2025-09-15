@@ -9,6 +9,7 @@ import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
 import { InterviewRequestsModule } from './interview-requests/interview-requests.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LogsModule } from './logs/logs.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

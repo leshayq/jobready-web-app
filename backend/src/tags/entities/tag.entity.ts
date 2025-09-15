@@ -1,3 +1,4 @@
+import { InterviewRequestEntity } from 'src/interview-requests/entities/interview-request.entity';
 import { QuestionEntity } from 'src/questions/entities/question.entity';
 import {
   Column,
@@ -22,6 +23,9 @@ export class TagEntity {
 
   @ManyToMany(() => QuestionEntity, (question) => question.tags)
   questions: QuestionEntity[];
+
+  @OneToMany(() => InterviewRequestEntity, (interview) => interview.theme)
+  interviews: InterviewRequestEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -14,11 +14,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const storedToken = localStorage.getItem("accessToken");
-      if (storedToken) {
-        setAccessToken(storedToken);
-      }
-
       try {
         const response = await api.post(
           "/auth/refresh",

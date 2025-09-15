@@ -9,12 +9,15 @@ export const useInterviews = (onlyUser = false) => {
   const [totalInterviews, setTotalInterviews] = useState(0);
   const [loading, setLoading] = useState(true);
   const { user, isAuthenticated } = useAuth();
+  const [error, setError] = useState(null);
 
   const interviewsPerPage = 2;
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const load = async () => {
+    throw new Error("Ошибка типизации");
+
     setLoading(true);
     let response;
 
@@ -38,6 +41,7 @@ export const useInterviews = (onlyUser = false) => {
       }
     } catch (error) {
       console.error("Помилка при отриманні списку співбесід", error);
+      setError("Не вдалося завантажити список співбесід");
       setInterviews([]);
       setTotalInterviews(0);
     } finally {
@@ -54,6 +58,7 @@ export const useInterviews = (onlyUser = false) => {
     loading,
     totalInterviews,
     interviewsPerPage,
+    error,
     reload: load,
   };
 };

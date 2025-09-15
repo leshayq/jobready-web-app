@@ -1,10 +1,19 @@
 import {
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   Length,
   MaxLength,
 } from 'class-validator';
+import { TagEntity } from 'src/tags/entities/tag.entity';
+import { ManyToOne } from 'typeorm';
+
+export enum InterviewDifficulty {
+  JUNIOR = 'Junior',
+  MIDDLE = 'Middle',
+  SENIOR = 'Senior',
+}
 
 // DTO для создания запроса собеседования (InterviewRequestEntity)
 export class CreateInterviewRequestDto {
@@ -15,13 +24,14 @@ export class CreateInterviewRequestDto {
   })
   title: string;
 
-  @IsString({ message: 'Рівень складності повинен бути рядкового типу' })
+  @IsEnum(InterviewDifficulty, {
+    message: 'Рівень повинен бути одним з 3 значень: Junior, Middle, Senior',
+  })
   @IsNotEmpty({ message: 'Рівень складності не може бути порожнім' })
-  difficulty: string;
+  difficulty: InterviewDifficulty;
 
-  @IsString({ message: 'Тема повинна бути рядкового типу' })
   @IsNotEmpty({ message: 'Тема не може бути порожньою' })
-  theme: string;
+  theme: TagEntity;
 
   @IsString({ message: 'Дата повинна бути рядкового типу' })
   @IsNotEmpty({ message: 'Дата не може бути порожньою' })

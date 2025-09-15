@@ -10,10 +10,13 @@ import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { CustomLogger } from './common/logger/logger.service';
 
 // Точка входа в приложение
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
   const configService = app.get(ConfigService);
   const frontend = configService.get<string>('FRONTEND_URL');
 
@@ -35,6 +38,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   // Подключение cookie-parser для работы с JWT/сессиями
   app.use(cookieParser());
+
+  app.useLogger(new CustomLogger());
 
   const port = configService.get<number>('PORT') || 3000;
 
