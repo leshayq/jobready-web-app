@@ -2,6 +2,7 @@ import { LoggerService, LogLevel } from '@nestjs/common';
 import { dirname, join } from 'path';
 import { promises as fs } from 'fs';
 
+// Кастомный логгер
 export class CustomLogger implements LoggerService {
   private readonly logsBaseDir = join(process.cwd(), 'logs');
 
@@ -17,6 +18,7 @@ export class CustomLogger implements LoggerService {
     this.writeToFile('error', message, context, trace);
   }
 
+  // Получение пути к папке записи лога
   private getLogDir(): string {
     const now = new Date();
     const year = now.getFullYear();
@@ -26,6 +28,7 @@ export class CustomLogger implements LoggerService {
     return logDir;
   }
 
+  // Функция записи лога в файл
   private async writeToFile(
     level: LogLevel,
     message: any,

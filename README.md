@@ -30,11 +30,11 @@ JobReady - веб-приложение, предназначенное для п
 ### Локальная разработка (Docker Compose)
 
 ```bash
-docker-compose -f docker.compose.dev.yml up --build -d
+docker compose -f docker-compose.dev.yml up --build -d
 ```
 
 ### Production Build (Docker Compose)
 
 ```bash
-docker-compose -f docker.compose.prod.yml up --build -d
+docker compose -f docker-compose.prod.yml up --build -d
 ```

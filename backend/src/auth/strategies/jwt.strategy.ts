@@ -5,14 +5,9 @@ import { UsersService } from 'src/users/users.service';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 
-/**
- * JWT стратегия для аутентификации пользователей.
- *
- * Стратегия интегрируется с `@nestjs/passport`.
- * Если токен валиден и пользователь существует, возвращает `UserEntity`.
- * В противном случае выбрасывает `UnauthorizedException`.
- */
+// JWT стратегия для авторизации пользователей.
 
+// Стратегия интегрируется с `@nestjs/passport`.
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(

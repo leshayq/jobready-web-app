@@ -24,7 +24,6 @@ export const QuestionDetail = () => {
           <DifficultyTag difficulty={question.difficulty}></DifficultyTag>
           <h3 className="font-bold text-7xl text-left">{question.title}</h3>
         </div>
-
         <div className="flex gap-3">
           {question.tags.map((tag) => (
             <div className="mt-4 flex flex-wrap gap-2" key={tag.id}>
@@ -34,7 +33,6 @@ export const QuestionDetail = () => {
             </div>
           ))}
         </div>
-
         <button
           onClick={() => handleClick()}
           className="!font-medium !mr-auto !mt-5 text-[var(--faded-text-color)] no-underline hover:underline cursor-pointer"
@@ -46,6 +44,7 @@ export const QuestionDetail = () => {
 
           {visible && <FontAwesomeIcon icon={faAngleUp} className="ml-0.5" />}
         </button>
+        {/* TODO: сделать подсветку разных языков */}
         {visible && (
           <div className="mt-5">
             <p>{question.answer.text}</p>

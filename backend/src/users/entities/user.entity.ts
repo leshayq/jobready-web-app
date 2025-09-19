@@ -27,6 +27,9 @@ export class UserEntity {
   @Column()
   role: string;
 
+  @Column({ default: false })
+  isActive: boolean;
+
   @Column({ name: 'hashed_refresh_token', type: 'varchar', nullable: true })
   hashedRefreshToken: string | null;
 

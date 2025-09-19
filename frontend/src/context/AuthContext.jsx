@@ -3,6 +3,7 @@ import { loginUser } from "../api/auth/login";
 import { registerUser } from "../api/auth/register";
 import { Loader } from "../components/Loader";
 import api, { setAccessToken } from "../api/api";
+import { faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 
 // Создаем контекст аутентификации
 const AuthContext = createContext(null);

@@ -71,4 +71,14 @@ export class UsersService {
     }
     return await this.userRepository.update(userId, updateData);
   }
+
+  // Отметить поле isActive у пользователя как подтвержденное
+  async markEmailAsConfirmed(user: UserEntity): Promise<void> {
+    user.isActive = true;
+    await this.userRepository.save(user);
+  }
+
+  async deleteAll() {
+    await this.userRepository.deleteAll();
+  }
 }

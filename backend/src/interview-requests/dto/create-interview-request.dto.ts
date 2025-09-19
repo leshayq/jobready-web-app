@@ -9,6 +9,7 @@ import {
 import { TagEntity } from 'src/tags/entities/tag.entity';
 import { ManyToOne } from 'typeorm';
 
+// Возможные уровни сложности собеседования
 export enum InterviewDifficulty {
   JUNIOR = 'Junior',
   MIDDLE = 'Middle',

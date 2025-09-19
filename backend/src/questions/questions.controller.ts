@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
   Req,
+  ForbiddenException,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -18,6 +19,8 @@ import { Request } from 'express';
 import { getUser } from 'src/common/getUser';
 import { PaginationResult } from 'src/common/interfaces/paged-results';
 import { QuestionEntity } from './entities/question.entity';
+import { EmailConfirmationGuard } from 'src/auth/guards/email-confirmation.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 
 @Controller('questions')
 export class QuestionsController {
@@ -45,7 +48,7 @@ export class QuestionsController {
 
   // Enpoint для создания вопроса
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, AdminGuard)
   async createQuestion(
     @Body() dto: CreateQuestionDto,
     @Req() req: Request,

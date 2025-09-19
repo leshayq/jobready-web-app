@@ -8,6 +8,10 @@ import { UsersModule } from 'src/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { EnvironmentVariables } from 'src/common/getEnv';
+import { EmailVerificationService } from 'src/email-verification/email-verification.service';
+import { EmailVerificationModule } from 'src/email-verification/email-verification.module';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -25,8 +29,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       }),
     }),
     UsersModule,
+    EmailVerificationModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, EnvironmentVariables, GoogleStrategy],
 })
 export class AuthModule {}

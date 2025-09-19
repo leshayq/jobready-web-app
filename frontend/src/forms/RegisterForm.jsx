@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { FormField } from "./fields/FormField";
 import { useNotification } from "../context/NotificationContext";
+import { useNavigate } from "react-router-dom";
 import {
   validateEmail,
   validateEqualPasswords,
@@ -9,6 +10,7 @@ import {
   validateUsername,
 } from "../utils/auth.validators";
 import { getError } from "../utils/utils";
+import { GoogleAuthButton } from "../components/buttons/GoogleAuthButton";
 
 // Форма регистрации
 export const RegisterForm = ({ onSuccessFunc, openLogin }) => {
@@ -21,6 +23,7 @@ export const RegisterForm = ({ onSuccessFunc, openLogin }) => {
   const { register, isAuthenticated } = useAuth();
   const { showNotification } = useNotification();
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,9 +62,14 @@ export const RegisterForm = ({ onSuccessFunc, openLogin }) => {
       await register(formData.username, formData.email, formData.password);
       onSuccessFunc();
       showNotification("Реєстрація пройшла успішно!", true);
+      navigate("/auth/email-sent", { replace: true });
     } catch (error) {
       setErrors({ general: getError(error) });
     }
+  };
+
+  const handleGoogleAuthClick = () => {
+    window.location.href = "http://localhost:3000/api/auth/google/login";
   };
 
   return (
@@ -134,6 +142,11 @@ export const RegisterForm = ({ onSuccessFunc, openLogin }) => {
           >
             Реєстрація
           </button>
+
+          <GoogleAuthButton
+            title="Реєстрація через Google"
+            onClick={handleGoogleAuthClick}
+          ></GoogleAuthButton>
         </form>
       </div>
     </div>

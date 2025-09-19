@@ -45,6 +45,14 @@ api.interceptors.response.use(
     }
 
     const requestUrl = originalRequest?.url || "";
+
+    if (
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/register")
+    ) {
+      return Promise.reject(error);
+    }
+
     // Если 401 получен при попытке обновить токен — выходим
     if (requestUrl.includes("/auth/refresh")) {
       return Promise.reject(error);

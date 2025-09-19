@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import "./normalize.css";
 import { Navbar } from "./components/Navbar";
@@ -17,7 +16,9 @@ import { Profile } from "./pages/Profile";
 import { ProfileOverivew } from "./pages/ProfileOverview";
 import { ProfileInterviews } from "./pages/ProfileInterviews";
 import { About } from "./pages/About";
-import { logErrorToServer } from "./api/logs/logs";
+import { EmailSent } from "./pages/email/EmailSent";
+import { EmailConfirmed } from "./pages/email/EmailConfirmed";
+import { GoogleAuthFail } from "./pages/GoogleAuthFail";
 
 function App() {
   return (
@@ -70,6 +71,18 @@ function App() {
                 element={<QuestionDetail></QuestionDetail>}
               ></Route>
               <Route path="/about" element={<About></About>}></Route>
+              <Route
+                path="/auth/email-sent"
+                element={<EmailSent></EmailSent>}
+              ></Route>
+              <Route
+                path="/auth/confirm-email"
+                element={<EmailConfirmed></EmailConfirmed>}
+              ></Route>
+              <Route
+                path="/auth/google/error"
+                element={<GoogleAuthFail></GoogleAuthFail>}
+              ></Route>
             </Routes>
           </main>
           <Footer></Footer>
@@ -78,15 +91,5 @@ function App() {
     </AuthProvider>
   );
 }
-
-window.addEventListener("error", (event) => {
-  logErrorToServer(event.error);
-  console.log("Ошибка на клиенте:", event.error);
-});
-
-window.addEventListener("unhandledrejection", (event) => {
-  logErrorToServer(event.reason);
-  console.log("Ошибка на клиенте: (отклоненный промис)", event.reason);
-});
 
 export default App;

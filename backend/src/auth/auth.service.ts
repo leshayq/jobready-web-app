@@ -17,7 +17,7 @@ import {
   TokensResponse,
   UserResponse,
 } from './interfaces/auth.interfaces';
-import { EnvironmentVarialbes } from 'src/common/getEnv';
+import { EnvironmentVariables } from 'src/common/getEnv';
 
 @Injectable()
 export class AuthService {
@@ -25,12 +25,18 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly envVars: EnvironmentVarialbes,
+    private readonly envVars: EnvironmentVariables,
   ) {}
 
   // Сервис авторизация пользователя
   async login(dto: LoginDto, res: Response): Promise<AuthResponse> {
     const user = await this.validateUser(dto);
+
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        'Спочатку підтвердіть свою електронну пошту',
+      );
+    }
 
     const tokens = await this.issueTokenPair(+user.id);
 
@@ -114,7 +120,7 @@ export class AuthService {
   }
 
   // Сервис обновления refresh токена
-  private async updateRefreshTokenHash(userId: number, refreshToken: string) {
+  async updateRefreshTokenHash(userId: number, refreshToken: string) {
     const hashedRefreshToken = await hash(refreshToken, 10);
     await this.usersService.updateUser(userId, {
       hashedRefreshToken,
@@ -122,7 +128,7 @@ export class AuthService {
   }
 
   // Сервис-сеттер refresh токена в cookies
-  private setRefreshTokenToCookie(res: Response, refreshToken: string): void {
+  setRefreshTokenToCookie(res: Response, refreshToken: string): void {
     const { cookieName, cookiePath, sameSite, httpOnly, secure } =
       this.envVars.getVariables();
 
@@ -142,5 +148,60 @@ export class AuthService {
       email: user.email,
       username: user.username,
     };
+  }
+
+  // Сервис-валидатор, проверяет наличие уже существующего аккаунта при входе через Google
+  // через email и username и создает нового
+  async validateOrCreateGoogleUser(googleUser: RegisterDto) {
+    const user = await this.usersService.findByEmail(googleUser.email);
+    if (user) return user;
+
+    const user2 = await this.usersService.findByUsername(googleUser.username);
+    if (user2) return user2;
+
+    return await this.usersService.createUser(googleUser);
+  }
+
+  // Функция, которая проверяет существующего или создает нового пользователя при входе через Google
+  // и авторизует его
+  async handleGoogleUser(googleUser: UserEntity) {
+    const user = await this.validateOrCreateGoogleUser({
+      email: googleUser.email,
+      username: googleUser.username.split('@')[0],
+      password: '',
+    });
+
+    user.isActive = true;
+    const tokens = await this.issueTokenPair(+user.id);
+
+    await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
+    return tokens;
+  }
+
+  // Сервис, выход из аккаунта пользователя
+  async logout(userId: number, res: Response) {
+    await this.usersService.updateUser(userId, {
+      hashedRefreshToken: null,
+    });
+
+    const { cookieName, cookiePath, sameSite, httpOnly, secure } =
+      this.envVars.getVariables();
+
+    try {
+      res.clearCookie(cookieName, {
+        httpOnly,
+        secure,
+        sameSite,
+        path: cookiePath,
+      });
+    } catch (e) {
+      res.cookie(cookieName, '', {
+        httpOnly,
+        secure,
+        sameSite,
+        expires: new Date(0),
+        path: cookiePath,
+      });
+    }
   }
 }

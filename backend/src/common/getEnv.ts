@@ -2,10 +2,10 @@ import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariablesResponse } from './interfaces/env-variables';
 import { Injectable } from '@nestjs/common';
 
-// Класс для описания получения переменных окружения
+// Класс для описания получения переменных окружения, связанных с refresh токенами
 @Injectable()
-export class EnvironmentVarialbes {
-  private readonly configService: ConfigService;
+export class EnvironmentVariables {
+  constructor(private readonly configService: ConfigService) {}
 
   // Функция, которая получает все переменные окружения из файла .env
   getVariables(): EnvironmentVariablesResponse {

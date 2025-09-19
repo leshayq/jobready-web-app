@@ -8,7 +8,6 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
-import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { CustomLogger } from './common/logger/logger.service';
 
@@ -38,7 +37,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   // Подключение cookie-parser для работы с JWT/сессиями
   app.use(cookieParser());
-
+  // Использование кастомного логгера
   app.useLogger(new CustomLogger());
 
   const port = configService.get<number>('PORT') || 3000;

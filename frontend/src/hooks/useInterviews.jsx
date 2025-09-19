@@ -16,8 +16,6 @@ export const useInterviews = (onlyUser = false) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const load = async () => {
-    throw new Error("Ошибка типизации");
-
     setLoading(true);
     let response;
 

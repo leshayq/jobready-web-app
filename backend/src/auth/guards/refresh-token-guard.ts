@@ -4,13 +4,17 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 // Guard, который проверяет валидность существующего refresh token'а юзера
 @Injectable()
 export class RefreshTokenGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
 
   /**
    * @returns True или UnauthorizedException
@@ -24,7 +28,9 @@ export class RefreshTokenGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
 
       request['user'] = { id: payload.sub };
     } catch (e) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterDto } from 'src/auth/dto/register.dto';
 import { UserEntity } from './entities/user.entity';
@@ -12,5 +12,12 @@ export class UsersController {
   @Get()
   async findAll(): Promise<UserEntity[]> {
     return this.usersService.findAll();
+  }
+
+  // DEVELOPMENT ONLY
+  // Endpoint для удаления всех пользователей
+  @Delete()
+  async deleteAll() {
+    return this.usersService.deleteAll();
   }
 }

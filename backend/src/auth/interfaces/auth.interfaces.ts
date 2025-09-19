@@ -8,7 +8,7 @@ export interface RequestWithUser extends Request {
   };
 }
 
-// Интерфейс данных пользователя
+// Интерфейс данных пользователя при возврате данных
 export interface UserResponse {
   id: number;
   email: string;

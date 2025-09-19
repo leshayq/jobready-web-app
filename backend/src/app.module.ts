@@ -4,12 +4,12 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { QuestionsModule } from './questions/questions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './users/entities/user.entity';
 import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
 import { InterviewRequestsModule } from './interview-requests/interview-requests.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { LogsModule } from './logs/logs.module';
+import { MailModule } from './mail/mail.module';
+import { EmailVerificationModule } from './email-verification/email-verification.module';
 
 @Module({
   imports: [
@@ -48,7 +48,8 @@ import { LogsModule } from './logs/logs.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    LogsModule,
+    MailModule,
+    EmailVerificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

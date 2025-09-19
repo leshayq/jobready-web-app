@@ -4,6 +4,7 @@ import { FormField } from "./fields/FormField";
 import { validateEmail, validatePassword } from "../utils/auth.validators";
 import { getError } from "../utils/utils";
 import { useNotification } from "../context/NotificationContext";
+import { GoogleAuthButton } from "../components/buttons/GoogleAuthButton";
 
 // Форма авторизации
 export const LoginForm = ({ onSuccessFunc, openRegister }) => {
@@ -44,6 +45,10 @@ export const LoginForm = ({ onSuccessFunc, openRegister }) => {
     } catch (error) {
       setErrors({ general: getError(error) });
     }
+  };
+
+  const handleGoogleAuthClick = () => {
+    window.location.href = "http://localhost:3000/api/auth/google/login";
   };
 
   return (
@@ -108,6 +113,11 @@ export const LoginForm = ({ onSuccessFunc, openRegister }) => {
           >
             Вхід
           </button>
+
+          <GoogleAuthButton
+            title="Вхід через Google"
+            onClick={handleGoogleAuthClick}
+          ></GoogleAuthButton>
         </form>
       </div>
     </div>

@@ -19,6 +19,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { getUser } from 'src/common/getUser';
 import { PaginationResult } from 'src/common/interfaces/paged-results';
 import { InterviewRequestEntity } from './entities/interview-request.entity';
+import { EmailConfirmationGuard } from 'src/auth/guards/email-confirmation.guard';
 
 @Controller('interview-requests')
 export class InterviewRequestsController {
@@ -41,7 +42,7 @@ export class InterviewRequestsController {
 
   // Enpoint для создания запроса собеседования
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   async createInterviewRequest(
     @Body() dto: CreateInterviewRequestDto,
     @Req() req: Request,
@@ -56,7 +57,7 @@ export class InterviewRequestsController {
 
   // Enpoint для удаления запроса собеседования
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   async deleteInterviewRequest(
     @Param('id') id: string,
     @Req() req: Request,
